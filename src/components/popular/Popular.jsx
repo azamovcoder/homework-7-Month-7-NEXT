@@ -1,24 +1,11 @@
 import "./Popular.scss";
 
-import Image from "next/image";
-import Link from "next/link";
-import { Products__API } from "@/app/static/static";
+import ProductWrapper from "../products/ProductWrapper/ProductWrapper";
 import React from "react";
+import { getData } from "@/app/api/fetchData";
 
-const Popular = () => {
-  const productItems = Products__API?.slice(0, 4).map((product) => (
-    <div className="popular__card" key={product?.id}>
-      <div className="popular__card__img">
-        <Link href={`/product/${product.id}`}>
-          <Image alt="product.png" src={product?.img} />
-        </Link>
-      </div>
-      <div className="popular__card__info">
-        <h4>{product?.title}</h4>
-        <p>{product?.price}$</p>
-      </div>
-    </div>
-  ));
+const Popular = async () => {
+  let data = await getData("/products");
   return (
     <div>
       <div className="popular container">
@@ -26,7 +13,7 @@ const Popular = () => {
         <p className="popular__desc">
           Our top selling product that you may like
         </p>
-        <div className="popular__cards">{productItems}</div>
+        <ProductWrapper data={data} limit={4} />
       </div>
     </div>
   );

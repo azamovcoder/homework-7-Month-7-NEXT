@@ -1,23 +1,22 @@
-"use client";
-
 import "./SinglePage.scss";
 
 import Image from "next/image";
-import { Products__API } from "@/app/static/static";
 import React from "react";
-import { useParams } from "next/navigation";
+import { getData } from "@/app/api/fetchData";
 
-const SinglePage = () => {
-  const { id } = useParams();
-  console.log(id);
-  const product = Products__API.find((prod) => prod.id === parseInt(id));
-  console.log("Product:", product); // Debugging log
-
+const SinglePage = async ({ params }) => {
+  const { proID } = params;
+  let product = await getData(`/products/${proID}`);
   return (
     <div>
       <div className="singlePage container">
         <div className="singlePage__img">
-          <Image alt="product.png" src={product.img} />
+          <Image
+            width={400}
+            height={400}
+            alt="product.png"
+            src={product.images[0]}
+          />
           <h3>
             All hand-made with natural soy wax, Candleaf is made for your
             pleasure moments.
